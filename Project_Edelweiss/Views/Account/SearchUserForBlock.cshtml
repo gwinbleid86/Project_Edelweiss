@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model Edelweiss.DAL.Entities.User
+
+@{
+    ViewData["Title"] = @Localizer["SearchUserForBlock"];
+}
+
+<h2>@Localizer["Search User For block"]</h2>
+<br/>
+<br/>
+
+<form asp-controller="Account" asp-action="SearchUserForBlock">
+    @ViewBag.Message@*=@Localizer["User is not found. Repeat search."])*@
+    
+    <p>
+        @Localizer["Input Name of User"] <input type="text" name="userName">
+        <input type="submit" value="@Localizer["Search"]" class="btn btn-sm btn-danger"/>
+    </p>
+    <div class="form-group">
+        <label asp-for="@Model.AgentId" class="control-label">@Localizer["Name of User's Agent"]</label>
+        <select asp-for="AgentId" asp-items="@ViewBag.agents">
+            <option selected="selected" disabled="disabled">@Localizer["All"]</option>
+        </select>
+        <span asp-validation-for="AgentId" class="text-danger"></span>
+    </div>
+</form>

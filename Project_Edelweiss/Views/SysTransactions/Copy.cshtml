@@ -1,0 +1,65 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.ClientsAndTransactionDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Create New"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Localizer["Create New"]</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SysTransactionDto.Sum" class="control-label"><b>@Localizer["Sum"]</b></label>
+                <input asp-for="SysTransactionDto.Sum" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="SysTransactionDto.CurrencyName" class="control-label">@Localizer["CurrencyName"]</label>
+                <select asp-for="SysTransactionDto.CurrencyName" asp-items="@ViewBag.currencies">
+                    <option selected="selected" disabled="disabled">Все</option>
+                </select>
+                <span asp-validation-for="SysTransactionDto.CurrencyName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SysTransactionDto.CountryName" class="control-label">@Localizer["Country"]</label>
+                <select asp-for="SysTransactionDto.CountryId" asp-items="@ViewBag.countries"></select>
+                <span asp-validation-for="SysTransactionDto.CountryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"><b>@Localizer["ClientFrom"]</b></label>
+                <label asp-for="Id" class="control-label">@Model.LastName @Model.Name</label>@*@Localizer["ClientFrom"]*@
+                <input asp-for="SysTransactionDto.ClientFromId" value="@Model.Id" type="hidden" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="ClientDto.Name" class="control-label">@Localizer["ClientToName"]</label>
+                    <input asp-for="ClientDto.Name" type="text" class="form-control" placeholder="Name">
+                    <span asp-validation-for="ClientDto.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="ClientDto.LastName" class="control-label">@Localizer["ClientToLastName"]</label>
+                    <input type="text" asp-for="ClientDto.LastName" class="form-control" placeholder="LastName">
+                    <span asp-validation-for="ClientDto.LastName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientDto.MobilePhone" class="control-label">@Localizer["MobilePhone"]</label>
+                <input type="tel" asp-for="ClientDto.MobilePhone" class="form-control" placeholder="MobilePhone">
+                <span asp-validation-for="ClientDto.MobilePhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Create New"]" class="btn btn-sm btn-danger" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="AllByStatus">@Localizer["Back to List"]</a>
+</div>
+

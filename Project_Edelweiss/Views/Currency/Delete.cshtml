@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.CurrencyDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Delete"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h3>@Localizer["sure"]</h3>
+    <div>
+        <h4>@Localizer["Currency"]</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Localizer["Id"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt>
+                @Localizer["Name"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+        </dl>
+
+        <form asp-action="DeleteItem" asp-route-id="@Model.Id">
+            <input type="submit" value="@Localizer["Delete"]" class="btn btn-sm btn-danger" />
+        </form>
+        <a asp-action="Index">@Localizer["Back to List"]</a>
+    </div>
+
+</div>
+

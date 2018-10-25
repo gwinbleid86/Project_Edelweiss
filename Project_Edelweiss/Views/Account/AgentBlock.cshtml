@@ -1,0 +1,19 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.AgentDTO
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["AgentBlock"];
+}
+
+<h2>@Localizer["AgentBlock"]</h2>
+
+<div>
+    <h4><h2>@Localizer["Agent"] @Model.Name @Localizer["Blocked"]</h2></h4>
+    <hr />
+
+    <form asp-controller="Account" asp-action="AgentUnBlock" asp-route-id="@Model.Id">
+        <input type="submit" value="@Localizer["Unblock"]" />
+    </form>
+    <a asp-action="Index" asp-controller="Agent">@Localizer["Back to List"]</a>
+</div>

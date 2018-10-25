@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.RangeDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Delete"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h3>@Localizer["sure"]</h3>
+
+    <div>
+        <h4>@Localizer["Range"]</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Localizer["Id"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt>
+                @Localizer["MinValue"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.MinValue)
+            </dd>
+            <dt>
+                @Localizer["MaxValue"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.MaxValue)
+            </dd>
+        </dl>
+
+        <form asp-action="DeleteItem" asp-route-id="@Model.Id">
+            <input type="submit" value="@Localizer["Delete"]" class="btn btn-sm btn-danger" />
+        </form>
+        <a asp-action="Index">@Localizer["Back to List"]</a>
+    </div>
+
+</div>
+

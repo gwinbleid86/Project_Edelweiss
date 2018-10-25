@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.RangeDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Details"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2>@Localizer["Details"]</h2>
+
+    <div>
+        <h4>@Localizer["Range"]</h4>
+        <hr />
+        <div class="container">
+            <div class="containerBorder">
+                <div class="detailElement">
+                    <div class="description">@Localizer["Id"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.Id)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["MinValue"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.MinValue)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["MaxValue"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.MaxValue)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">@Localizer["Edit"]</a>  |
+        <a asp-action="Index">@Localizer["Back to List"]</a>
+    </div>
+
+</div>
+

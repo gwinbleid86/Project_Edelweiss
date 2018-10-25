@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.CellPhoneMaskDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Details"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2>@Localizer["Details"]</h2>
+
+    <div>
+        <h4>@Localizer["Mask"]</h4>
+        <hr />
+        <div class="container">
+            <div class="containerBorder">
+                @*<div class="detailElement">
+                    <div class="description">@Localizer["Id"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.Id)</div>
+                </div>*@
+                <div class="detailElement">
+                    <div class="description">@Localizer["Mask"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.Mask)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["CellPhone"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.CellPhone)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["CountryId"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.CountryName)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a asp-action="Index">@Localizer["Back to List"]</a>
+    </div>
+
+</div>
+

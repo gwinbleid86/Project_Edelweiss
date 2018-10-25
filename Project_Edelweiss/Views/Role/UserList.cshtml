@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model IEnumerable<Edelweiss.DAL.Entities.User>
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["UserList"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Localizer["UserList"]</h2>
+<table class="table">
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>
+                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-userid="@user.Id">@Localizer["UserRights"]</a>
+            </td>
+        </tr>
+    }
+</table>

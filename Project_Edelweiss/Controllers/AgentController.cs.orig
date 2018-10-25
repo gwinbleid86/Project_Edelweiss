@@ -1,0 +1,90 @@
+﻿using System.Collections.Generic;
+using AutoMapper;
+using Edelweiss.BLL.DTO;
+using Edelweiss.BLL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Project_Edelweiss.Models;
+
+namespace Project_Edelweiss.Controllers
+{
+    public class AgentController : Controller
+    {
+        IAgentService agentService;
+        public AgentController(IAgentService agentService)
+        {
+            this.agentService = agentService;
+        }
+
+
+        // GET: Agent
+        public ActionResult Index()
+        {
+            IEnumerable<AgentDTO> agentDtos = agentService.GetAll();
+            //var agents = Mapper.Map<IEnumerable<AgentDTO>, List<AgentViewModel>>(agentDtos);
+            return View(agentDtos);
+        }
+
+        // GET: Agent/Details/5
+        public ActionResult Details(int id)
+        {
+            return View(Mapper.Map<AgentDTO, AgentViewModel>(agentService.Get(id)));
+        }
+
+        // GET: Agent/Create
+        public IActionResult Create()
+        {
+            IEnumerable<AgentDTO> agentDtos = agentService.GetAll();
+            ViewBag.agents = new SelectList(agentDtos, "Id", "Name");
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(AgentDTO agentDTO)
+        {
+<<<<<<< HEAD
+            if (ModelState.IsValid)
+            {
+                agentService.Create(Mapper.Map<AgentViewModel, AgentDTO>(agentDTO));
+                return RedirectToAction(nameof(Index));
+            }
+=======
+            agentService.Create(agentDTO);
+>>>>>>> Transactions
+            return View();
+        }
+
+
+        // GET: Agent/Edit/5
+        public ActionResult EditView(int id)
+        {
+            return View(Mapper.Map<AgentDTO, AgentViewModel>(agentService.Get(id)));
+        }
+
+        // POST: Agent/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(AgentViewModel model)
+        {
+            agentService.Update(Mapper.Map<AgentViewModel, AgentDTO>(model));
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Agent/Delete/5
+        public IActionResult DeleteInfo(int id)
+        {
+            return View(Mapper.Map<AgentDTO, AgentViewModel>(agentService.Get(id)));
+        }
+
+        // POST: Agent/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            agentService.Delete(id);
+            return RedirectToAction(nameof(Index));
+        }
+    }
+}

@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.AgentDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Details"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div>
+        <h4>@Localizer["AgentDTO"]</h4>
+        <hr />
+        <div class="container">
+            <div class="containerBorder">
+                @*<div class="detailElement">
+                        <div class="description">@Localizer["Id"]</div>
+                        <div class="objectValue">@Html.DisplayFor(model => model.Id)</div>
+                    </div>*@
+                <div class="detailElement">
+                    <div class="description">@Localizer["Name"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.Name)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["ParentAgentId"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.ParentAgentName)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["CountryId"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.CountryName)</div>
+                </div>
+                @if (@ViewBag.Logo != null)
+                {
+                    <div class="detailElement">
+                        <div class="description">@Localizer["ImageLogo"]</div>
+                        <div class="objectValue"><img src="@ViewBag.Logo" alt="logo" width="60" height="60"></div>
+                    </div>
+                }
+                <div class="detailElement">
+                    <div class="description">@Localizer["TextPromo"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.TextPromo)</div>
+                </div>
+                @if (@ViewBag.Promo != null)
+                {
+                    <div class="detailElement">
+                        <div class="description">@Localizer["ImagePromo"]</div>
+                        <div class="objectValue"><img src="@ViewBag.Promo" alt="promo" width="60" height="60"></div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div>
+        <form @*method="post" *@ asp-controller="Account" asp-action="AgentBlock" asp-route-id="@Model.Id">
+            <input type="submit" value="@Localizer["AgentBlock"]" class="btn btn-sm btn-danger" />
+        </form>
+
+        <form @*method="post" *@ asp-controller="Account" asp-action="AgentUnBlock" asp-route-id="@Model.Id">
+            <input type="submit" value="@Localizer["AgentUnBlock"]" class="btn btn-sm btn-danger" />
+        </form>
+    </div>
+
+</div>
+

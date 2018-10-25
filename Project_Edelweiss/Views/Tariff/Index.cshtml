@@ -1,0 +1,101 @@
+﻿@using Edelweiss.BLL.Enums
+@using X.PagedList
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@model X.PagedList.IPagedList<Edelweiss.BLL.DTO.TariffDTO>
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Index"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Localizer["Index"]</h2>
+
+<p>
+    <a asp-action="Create">@Localizer["Create New"]</a>
+</p>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Localizer["Id"]
+            </th>
+            <th>
+                @Localizer["StartTime"]
+            </th>
+            <th>
+                @Localizer["Agent"]
+            </th>
+            <th>
+                @Localizer["Country"]
+            </th>
+            <th>
+                @Localizer["MinValue"]
+            </th>
+            <th>
+                @Localizer["MaxValue"]
+            </th>
+            <th>
+                @Localizer["Currency"]
+            </th>
+            <th>
+                @Localizer["CommissionType"]
+            </th>
+            <th>
+                @Localizer["Value"]
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AgentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RangeMinValue)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RangeMaxValue)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrencyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeOfCommission)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value)
+                </td>
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Tariff" asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"] |</a>
+                        <a asp-controller="Tariff" asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"] |</a>
+                        <a asp-controller="Tariff" asp-action="Copy" asp-route-id="@item.Id">@Localizer["Copy"] |</a>
+                    }
+                    <a asp-controller="Tariff" asp-action="Details" asp-route-id="@item.Id">@Localizer["Details"] |</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+    new PagedListRenderOptions {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
+    })

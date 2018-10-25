@@ -1,0 +1,210 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon">
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/countries/phonecode.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="~/font-awesome/css/font-awesome.min.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/vendor.min.css" />
+        <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+              integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+              crossorigin="anonymous">
+    </environment>
+</head>
+<body>
+    <header>
+        @{
+            Html.RenderPartial("_NavigationMenu");
+        }
+    </header>
+
+    <div class="row flex-xl-nowrap">
+        <div class="col-12 col-md-3 col-xl-2 bd-sidebar">
+            <div class="list-group">
+                @if (User.IsInRole("Cashier") || User.IsInRole("ControllerExtended"))
+                {
+                    <label class="list-group" id="main-menu">@Localizer["Clients"]</label>
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Client" asp-action="Index">@Localizer["ClientSearch"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Client" asp-action="Create">@Localizer["ClientCreate"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Tariff" asp-action="Index">@Localizer["Tariffs"]</a>
+                        </li>
+                    </ul>
+                    <label class="list-group" id="main-menu">@Localizer["CashierMenu"]</label>
+                    <ul class="list-group">
+                        @*<li class="list-group-item list-group-item-action">
+                                <a asp-action="AllCreated" asp-controller="SysTransactions">@Localizer["AllCreated"]</a>
+                                     <a asp-action="AllCreated" asp-controller="SysTransactions">@Localizer["AllCreated"]</a>
+                            </li>*@
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="SysTransactions" asp-action="Sort">@Localizer["Search"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-action="AllByStatus" asp-controller="SysTransactions" asp-route-status="Created">@Localizer["AllByThisAgent"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-action="AllByStatus" asp-controller="SysTransactions" asp-route-status="ToPay">@Localizer["AllToPay"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-action="AllToPayOff" asp-controller="SysTransactions">@Localizer["AllToPayOff"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-action="AllByStatus" asp-controller="SysTransactions" asp-route-status="ToPayOff">@Localizer["ToPayOff"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-action="AllByStatus" asp-controller="SysTransactions" asp-route-status="Issued">@Localizer["Issued"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-action="AllCanceled" asp-controller="SysTransactions">@Localizer["AllCanceled"]</a>
+                        </li>
+                        @*<a class="list-group-item list-group-item-action" asp-action="AllByStatus" asp-controller="SysTransactions" asp-route-status="Canceled">@Localizer["Canceled"]</a>*@
+                    </ul>
+
+                }
+                @if (User.IsInRole("Controller") || User.IsInRole("ControllerExtended"))
+                {
+                    <label class="list-group" id="main-menu">@Localizer["Controller"]</label>
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-action="AllByStatus" asp-controller="SysTransactions" asp-route-status="Approved">@Localizer["Approved"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-action="AllByThisAgent" asp-controller="SysTransactions">@Localizer["AllByThisController"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-action="AllByStatus" asp-controller="SysTransactions" asp-route-status="Confirmed">@Localizer["Confirmed"]</a>
+                        </li>
+                        @if (User.IsInRole("ControllerExtended"))
+                        {
+                            <li class="list-group-item list-group-item-action">
+                                <a class="list-group-item-action" asp-action="AllByThisSubAgentIncludParentAgent" asp-controller="SysTransactions">@Localizer["AllByThisSubAgentIncludParentAgent"]</a>
+                            </li>
+                        }
+                    </ul>
+
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <label class="list-group" id="main-menu">@Localizer["Admin"]</label>
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="SysTransactions" asp-action="Sort">@Localizer["Search"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Agent" asp-action="Index">@Localizer["AgentList"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Client" asp-action="Index">@Localizer["ClientSearch"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Country" asp-action="Index">@Localizer["CountryList"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="SysTransactions" asp-action="Index" asp-route-role="@User.IsInRole("Admin")">@Localizer["TransactionList"]</a>
+                        </li>
+                        @*<li class="list-group-item list-group-item-action">
+                            <a class="list-group-item list-group-item-action" asp-controller="SysTransactions" asp-action="Sort">@Localizer["SortTest"]</a>
+                        </li>*@
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Role" asp-action="Index">@Localizer["Roles"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Currency" asp-action="Index">@Localizer["Currencies"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Tariff" asp-action="Index">@Localizer["Tariffs"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Range" asp-action="Index">@Localizer["Ranges"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Commission" asp-action="Index">@Localizer["Commissions"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="CellPhoneMask" asp-action="Index">@Localizer["CellPhoneMask"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Account" asp-action="SearchAgentForBlock">@Localizer["FindAgent"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Account" asp-action="SearchUserForBlock">@Localizer["FindUser"]</a>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action" asp-controller="Account" asp-action="Register">@Localizer["Register"]</a>
+                        </li>
+                    </ul>
+
+                }
+            </div> @*col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content*@
+        </div>
+        <div class="col-12 col-md-8">            
+            @RenderBody()
+        </div>
+    </div>
+
+    <div>
+
+    </div>
+    <div class="admin-menu-list">
+
+    </div>
+    <div>
+
+    </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/vendor.min.js"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+
+<script>
+    $(function () {
+        $("#dateFieldFirst").datepicker();
+        $("#dateFieldSecond").datepicker();
+    });
+</script>
+

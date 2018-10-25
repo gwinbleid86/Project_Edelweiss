@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Edelweiss.BLL.DTO.AgentDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+@*<p>
+    <a asp-controller="Agent" asp-action="Create">Добавить нового агента</a>
+    <br>
+    <a asp-controller="Client" asp-action="Create">Зарегистрировать нового клиента</a>
+    <br>
+    <a asp-controller="Client" asp-action="Index">Список клиентов</a> <br>
+    <a asp-controller="SysTransactions" asp-action="Index">Список транзакций</a> <br>
+    <a asp-controller="SysTransactions" asp-action="Sort">Тестовый список транзакций для сортировки</a> <br>
+    <a asp-controller="Role" asp-action="Index">Роли</a>
+</p>*@
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Agent", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", "Agent", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", "Agent", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

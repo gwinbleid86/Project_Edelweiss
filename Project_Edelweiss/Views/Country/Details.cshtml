@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.CountryDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Details"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2>@Localizer["Details"]</h2>
+
+    <div>
+        <hr />
+        <div class="container">
+            <div class="containerBorder">
+                <div class="detailElement">
+                    <div class="description">@Localizer["Id"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.Id)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["Name"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.Name)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">@Localizer["Edit"]</a>  |
+        <a asp-action="Index">@Localizer["Back to List"]</a>
+    </div>
+
+</div>
+

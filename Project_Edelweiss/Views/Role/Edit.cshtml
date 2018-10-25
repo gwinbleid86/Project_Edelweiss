@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Project_Edelweiss.Models.ChangeRoleViewModel
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Edit"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@Localizer["Edit"] @Model.UserEmail</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" name="userId" value="@Model.UserId" />
+    <div class="form-group">
+        @foreach (IdentityRole role in Model.AllRoles)
+        {
+            <input type="radio" name="roles" value="@role.Name"
+                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />@role.Name <br />
+            }
+    </div>
+    <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+</form>

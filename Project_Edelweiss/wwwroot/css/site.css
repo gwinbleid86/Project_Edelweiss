@@ -1,0 +1,231 @@
+﻿body {
+    padding-bottom: 20px;
+    background-color: #f5efef;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+#toPay {
+    background-color: #ad555c;
+}
+#Cancel {
+    background-color: darkred;
+}
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+.navbar {
+    background-color: #ad555c;
+}
+.list-group {
+    padding-left: 5px;
+}
+.login {
+    position: center;
+    padding-left: 350px;
+    padding-top: 150px;
+}
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #44c373;
+    border-color: #44c373;
+}
+.page-link {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #ad555c;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+.pagination-container {
+    margin-top: 30px;
+}
+.pagination {
+    margin-left: 50%;
+}
+#main-menu {
+    background-color: #44c373;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    text-align: left;
+    width: auto;
+    color: #ffffff;
+    padding-left: 21px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: block;
+}
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+.navbar-collapse {
+     flex-grow: 0;
+ }
+.navbar , h4{
+    margin-bottom: 40px;
+}
+.form-control-borderless {
+    border: none;
+}
+
+.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+.list-group-item {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.list-group-item-action {
+    width: 100%;
+    color: #ad555c;
+    text-align: inherit;
+}
+    .list-group-item-action a {
+        width: 100%;
+        display: block;
+    }
+
+    .list-group-item-action:hover, .list-group-item-action:focus {
+        color: #ffffff;
+        text-decoration: none;
+        background-color: #44c373;
+    }
+
+.table .thead-dark th {
+    color: #ffffff;
+    background-color: #44c373;
+    border-color: #319656;
+    text-align: center;
+
+}
+tbody {
+    border-color: #319656;
+}
+.bg-dark {
+    background-color: #343a40 !important;
+}
+div .containerBorder {
+    margin: 50px;
+    color: #355641;
+    border: solid 2px #ad555c;
+}
+div .detailElement {
+    display: flex;
+}
+div .logo {
+    margin: 30px;
+    text-align: center;
+}
+div .description, .objectValue {
+    margin: 5px;
+    width: 50%;
+    text-align: center;
+}
+    div .description {
+        font-weight: 700;
+    }
+div .objectValue {
+    font-weight: 400;
+}
+div .advertising {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.form-group .text-center {
+    margin-right: auto;
+    margin-left: auto;
+}
+.btn-confirm, .btn-print {
+    display: flex;
+    margin: 5px;
+    width: 50%;
+    
+}
+#btn-disappear {
+    width: 100%;
+    text-align: center;
+}
+div .containerBtn {
+    margin: 50px;
+}
+a {
+    color: #ad555c;
+}
+
+label {
+    color: #ad555c;
+}
+td, h2, h3, h4, dd, dt {
+    color: #355641;
+    text-align: center;
+}
+.btn {
+    background-color: #44c373;
+    color: #f5efef;
+}
+#btn-margin {
+    margin-top: 20px;
+}
+
+.DateFrom {
+    width: 70px
+}
+
+
+.DateTo {
+    width: 70px;
+   
+}
+
+.form-filter {
+    width: 280px;
+    height: 34px;
+}
+
+.form-check-inline {
+    text-align: justify;
+}
+
+.form-filter-div {
+    padding-bottom: 10px;
+}
+
+.last-div {
+ padding-left: 11px;
+}

@@ -1,0 +1,149 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.ClientsAndTransactionDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Create New"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>@Localizer["Create New"]</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SysTransactionDto.Sum" class="control-label"><b>@Localizer["Sum"]</b></label>
+                <input asp-for="SysTransactionDto.Sum" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="SysTransactionDto.CurrencyName" class="control-label">@Localizer["CurrencyName"]</label>
+                <select asp-for="SysTransactionDto.CurrencyName" asp-items="@ViewBag.currencies">
+                    <option selected="selected" disabled="disabled">Все</option>
+                </select>
+                <span asp-validation-for="SysTransactionDto.CurrencyName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SysTransactionDto.CountryId" class="control-label">@Localizer["Country"]</label>
+
+
+                <label asp-for="SysTransactionDto.ClientToName">@Localizer["SortByName"]</label>
+                <input id="byNameSortRadio" asp-for="SysTransactionDto.Sum" value="@ViewBag.countriesByName" type="radio" />
+
+                <label asp-for="SysTransactionDto.CountryName">@Localizer["SortByPopularity"]</label>
+                <input id="byPopularitySortRadio" asp-for="SysTransactionDto.Sum" value="@ViewBag.countriesByPopularity" type="radio" />
+
+                <div class="form-group">
+                    <select id="countries" asp-for="SysTransactionDto.CountryId" asp-items="@ViewBag.countries"></select>
+                    <span asp-validation-for="SysTransactionDto.CountryId" class="text-danger"></span>
+                </div>
+                @*<select asp-for="SysTransactionDto.CountryId" asp-items="@ViewBag.countries"></select>
+                    <label asp-for="SysTransactionDto.Country" class="control-label">сортировка по названию </label>
+                    <select asp-for="SysTransactionDto.CountryId" asp-items="@ViewBag.countriesByName"></select>
+                    <label asp-for="SysTransactionDto.Country" class="control-label">сортировка по популярности</label>
+                    <select asp-for="SysTransactionDto.CountryId" asp-items="@ViewBag.countriesByPopularity"></select>
+                    <span asp-validation-for="SysTransactionDto.CountryId" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"><b>@Localizer["ClientFrom"]</b></label>
+                <label asp-for="Id" class="control-label">@Model.LastName @Model.Name</label>@*@Localizer["ClientFrom"]*@
+                <input asp-for="SysTransactionDto.ClientFromId" value="@Model.Id" type="hidden" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="ClientDto.Name" class="control-label">@Localizer["ClientToName"]</label>
+                    <input asp-for="ClientDto.Name" type="text" class="form-control" placeholder="@Localizer["ClientToName"]">
+                    <span asp-validation-for="ClientDto.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="ClientDto.LastName" class="control-label">@Localizer["ClientToLastName"]</label>
+                    <input type="text" asp-for="ClientDto.LastName" class="form-control" placeholder="@Localizer["ClientToLastName"]">
+                    <span asp-validation-for="ClientDto.LastName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientDto.MobilePhone" class="control-label">@Localizer["MobilePhone"]</label>
+                <input type="tel" id="phone" asp-for="ClientDto.MobilePhone" class="form-control" placeholder="@Localizer["MobilePhone"]">
+                <span asp-validation-for="ClientDto.MobilePhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Create New"]" class="btn btn-sm btn-danger" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@Localizer["Back to List"]</a>
+</div>
+
+@section Scripts{
+    <script src="~/css/countries/jquery-1.11.0.min.js"></script>
+    <script src="~/css/countries/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="~/css/countries/counties.js"></script>
+    <script src="~/css/countries/phonecode.js"></script>
+    <script>
+
+        $(function () {
+            $('#phone').phonecode({
+                preferCo: 'kg'
+            });
+        });
+    </script>
+
+    <script>
+
+        $( document ).ready(function() {
+            //console.log("ready!");
+            $("#byPopularitySortRadio").click();
+            //document.getElementById('poBoxRadioNo').checked = true;
+        });
+
+
+        $("#byNameSortRadio").on('change',
+            function(e) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("SortByName", "SysTransactions")',
+                    success: function(response) {
+                        reloadCountries(response);
+                    }
+                });
+            });
+
+        $("#byPopularitySortRadio").on('change',
+            function(e) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("SortByPopularity", "SysTransactions")',
+                    success: function(response) {
+                        reloadCountries(response);
+                    }
+                });
+            });
+
+        function reloadCountries(response) {
+            var options, index, select, option;
+
+            // Get the raw DOM object for the select box
+            select = document.getElementById('countries');
+
+            // Clear the old options
+            select.options.length = 0;
+
+            // Load the new options
+            options = response; // Or whatever source information you're working with
+            for (index = 0; index < options.length; ++index) {
+                option = options[index];
+                select.options.add(new Option(option.text, option.value));
+            }
+        }
+
+
+
+    </script>
+}
+

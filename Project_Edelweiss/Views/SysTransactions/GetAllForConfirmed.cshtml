@@ -1,0 +1,98 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using X.PagedList
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<Edelweiss.BLL.DTO.SysTransactionDTO>
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["GetAllConfirmed"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2>@Localizer["List"]</h2>
+    <p>
+        <a asp-action="Create">@Localizer["Create New"]</a>
+    </p>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    @Localizer["Sum"]
+                </th>
+                <th>
+                    @Localizer["Tcn"]
+                </th>
+                <th>
+                    @Localizer["TransactionStatus"]
+                </th>
+                <th>
+                    @Localizer["CreateDateLocal"]
+                </th>
+                <th>
+                    @Localizer["AgentFrom"]
+                </th>
+                <th>
+                    @Localizer["AgentTo"]
+                </th>
+                <th>
+                    @Localizer["CountryId"]
+                </th>
+                <th>
+                    @Localizer["ClientFrom"]
+                </th>
+                <th>
+                    @Localizer["ClientTo"]
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sum)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tcn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreateDateLocal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AgentFromName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AgentToName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CountryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClientFromName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClientToName)
+                    </td>
+                    <td>
+                        <form asp-action="Details">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <input type="hidden" name="idAgent" class="form-control" value="@item.AgentFromId" />
+                            <div class="form-group">
+                                <input type="submit" value="@Localizer["Details"]" class="btn btn-sm btn-danger" />
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.PagedListPager(Model, page => Url.Action("AllByStatus", new { page = page, status = @Model.Select(t => t.Status).FirstOrDefault().ToString() }),
+        new PagedListRenderOptions {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" }
+        })
+</div>

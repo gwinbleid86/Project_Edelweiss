@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.TariffDTO
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["Details"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2>@Localizer["Details"]</h2>
+    <hr />
+    <div class="containerBorder">
+        <div class="detailElement">
+            <div class="description">@Localizer["Agent"]</div>
+            <div class="objectValue">@Html.DisplayFor(model => model.AgentName)</div>
+        </div>
+        <div class="detailElement">
+            <div class="description">@Localizer["Country"]</div>
+            <div class="objectValue">@Html.DisplayFor(model => model.CountryName)</div>
+        </div>
+        <div class="detailElement">
+            <div class="description">@Localizer["Currency"]</div>
+            <div class="objectValue">@Html.DisplayFor(model => model.CurrencyName)</div>
+        </div>
+        <div class="detailElement">
+            <div class="description">@Localizer["CommissionType"]</div>
+            <div class="objectValue">@Html.DisplayFor(model => model.TypeOfCommission)</div>
+        </div>
+        <div class="detailElement">
+            <div class="description">@Localizer["Value"]</div>
+            <div class="objectValue">@Html.DisplayFor(model => model.Value)</div>
+        </div>
+
+    </div>
+</div>
+<div class="container">
+    <a asp-controller="Tariff" asp-action="Edit" asp-route-id="@Model.Id">@Localizer["Edit"]</a> |
+    <a asp-action="Index">@Localizer["Back to List"]</a>
+</div>
+

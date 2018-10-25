@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.AgentDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["General"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div align="center">
+    <dl class="dl-horizontal">
+        @*<dt>
+            @Localizer["Name"]
+        </dt>*@
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+        @if (@Model.ParentAgentId != null)
+        {
+        @*<dt>
+            @Localizer["ParentAgentId"]
+        </dt>*@
+            <dd>
+                @Html.DisplayFor(model => model.ParentAgentName)
+            </dd>
+        }
+        @*<dt>
+            @Localizer["CountryId"]
+        </dt>*@
+            <dd>
+                @Html.DisplayFor(model => model.CountryName)
+            </dd>
+         @if (@Model.TextPromo != null)
+         {
+             @*<dt>
+                 @Localizer["TextPromo"]
+             </dt>*@
+        
+            <dd>
+                @Html.DisplayFor(model => model.TextPromo)
+            </dd>
+            }
+        @if (@ViewBag.Promo != null)
+        {
+            <dd>
+                <img src="@ViewBag.Promo" alt="promo" width="600" height="300">
+            </dd>
+        }
+
+    </dl>
+</div>

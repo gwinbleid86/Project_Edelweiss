@@ -1,0 +1,82 @@
+﻿@using Edelweiss.BLL.Enums
+@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.TariffDTO
+@inject IViewLocalizer Localizer
+
+
+@{
+    ViewData["Title"] = @Localizer["Create"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2>@Localizer["Create"]</h2>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="StartTime" class="control-label">@Localizer["StartTime"]</label>
+                    <input asp-for="StartTime" class="form-control" />
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AgentId" class="control-label">@Localizer["AgentId"]</label>
+                    <select asp-for="AgentId" asp-items="@ViewBag.agents">
+                        <option selected="selected" disabled="disabled">@Localizer["Agent"]</option>
+                    </select>
+                    <span asp-validation-for="AgentId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CountryId" class="control-label">@Localizer["CountryId"]</label>
+                    <select asp-for="CountryId" asp-items="@ViewBag.countries">
+                        <option selected="selected" disabled="disabled">@Localizer["Country"]</option>
+                    </select>
+                    <span asp-validation-for="CountryId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CurrencyId" class="control-label">@Localizer["CurrencyId"]</label>
+                    <select asp-for="CurrencyId" asp-items="@ViewBag.currencies">
+                        <option selected="selected" disabled="disabled">@Localizer["Currency"]</option>
+                    </select>
+                    <span asp-validation-for="CurrencyId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RangeId" class="control-label">@Localizer["Range"]</label>
+                    <select asp-for="RangeId" asp-items="@ViewBag.rangesMin">
+                        <option selected="selected" disabled="disabled">@Localizer["MinValue"]</option>
+                    </select>
+                    <span asp-validation-for="RangeId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RangeId" class="control-label">@Localizer["Range"]</label>
+                    <select asp-for="RangeId" asp-items="@ViewBag.rangesMax">
+                        <option selected="selected" disabled="disabled">@Localizer["MaxValue"]</option>
+                    </select>
+                    <span asp-validation-for="RangeId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CommissionType" asp-items="Html.GetEnumSelectList<CommissionType>()" class="control-label">@Localizer["CommissionType"]</label>
+                    <select asp-for="CommissionType" asp-items="Html.GetEnumSelectList<CommissionType>()"></select>
+                    <span asp-validation-for="CommissionType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Value" class="control-label">@Localizer["Value"]</label>
+                    <input asp-for="Value" class="form-control" />
+                    <span asp-validation-for="Value" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="@Localizer["Create"]" class="btn btn-sm btn-danger" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">@Localizer["Back to List"]</a>
+    </div>
+
+
+</div>
+

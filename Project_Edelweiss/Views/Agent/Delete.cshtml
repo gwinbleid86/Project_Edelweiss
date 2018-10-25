@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.AgentDTO
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["DeleteInfo"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h3>@Localizer["sure"]</h3>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Localizer["Name"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt>
+                @Localizer["ParentAgentId"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ParentAgentName)
+            </dd>
+            <dt>
+                @Localizer["CountryId"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CountryName)
+            </dd>
+        </dl>
+
+        <form asp-action="Delete" asp-route-id="@Model.Id">
+            <input type="submit" value="@Localizer["Delete"]" class="btn btn-sm btn-danger" />
+        </form>
+        <a asp-action="Index">@Localizer["Back to List"]</a>
+    </div>
+
+</div>

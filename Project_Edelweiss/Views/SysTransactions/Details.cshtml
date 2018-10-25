@@ -1,0 +1,183 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.SysTransactionDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Details"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="printdiv">
+    <div>
+        <div align="center">
+            <img src="~/images/Emojione_1F338.svg" alt="logo" width="60" height="60">
+            <h2>@Localizer["Edelweiss"]</h2>
+        </div>
+        <hr />
+        <h3>@Localizer["Details"]</h3>
+        <div class="container">
+            <div class="containerBorder">
+                <div class="detailElement">
+                    <div class="description">@Localizer["Id"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.Id)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["Sum"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.Sum) @Html.DisplayFor(model => model.CurrencyName)</div>
+                </div>
+                 <div class="detailElement">
+                     <div class="description">@Localizer["AgentToCommission"]</div>
+                     <div class="objectValue">@Html.DisplayFor(model => model.AgentToCommission)  @Html.DisplayFor(model => model.CurrencyName)</div>
+                </div>
+                 <div class="detailElement">
+                     <div class="description">@Localizer["AgentFromCommission"]</div>
+                     <div class="objectValue">@Html.DisplayFor(model => model.AgentFromCommission) @Html.DisplayFor(model => model.CurrencyName)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["Tcn"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.Tcn)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["TransactionStatus"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.Status)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["CreateDateLocal"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.CreateDateLocal)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["AgentFrom"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.AgentFromName)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["AgentTo"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.AgentToName)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["Country"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.CountryName)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["ClientFrom"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.ClientFromName)</div>
+                </div>
+                <div class="detailElement">
+                    <div class="description">@Localizer["ClientTo"]</div>
+                    <div class="objectValue">@Html.DisplayFor(model => model.ClientToName)</div>
+                </div>
+                <div class="advertising" id="advertising"> @Html.DisplayFor(model => model.AgentFromTextPromo)</div>
+                <div class="logo"><img src="@ViewBag.Promo" alt="promo" width="600" height="300"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="containerBtn">
+        <div class="detailElement">
+            <div class="btn-confirm">
+                @if (Model.TransactionStatus == 1)
+                {
+                    <div id="btn-disappear">
+                        <form asp-action="ToPay">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <input asp-for="Id" type="hidden" class="form-control" />
+                                <input name="idAgent" value="@Model.AgentFromId" type="hidden" class="form-control" />
+                                <input type="submit" id="toPay" onclick="openCommentForm(@Model.Id)" style="cursor: pointer" value="@Localizer["ToPay"]" class="btn btn-sm btn-danger" />
+                            </div>
+                        </form>
+                    </div>
+                }
+                @if (Model.TransactionStatus == 2)
+                {
+                    <div id="btn-disappear">
+                        <form asp-action="Approved">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div>
+                                <input asp-for="Id" type="hidden" class="form-control" />
+                                <input name="idAgent" value="@Model.AgentFromId" type="hidden" class="form-control" />
+                                <input type="submit" id="toPay" onclick="openCommentForm(@Model.Id)" style="cursor: pointer" value="@Localizer["Approve"]" class="btn btn-sm btn-danger" />
+                            </div>
+                        </form>
+                    </div>
+                }
+
+                @if (Model.TransactionStatus == 3)
+                {
+                    <div id="btn-disappear">
+                        <form asp-action="Confirmed">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div>
+                                <input asp-for="Id" type="hidden" class="form-control" />
+                                <input name="idAgent" value="@Model.AgentFromId" type="hidden" class="form-control" />
+                                <input type="submit" id="toPay" onclick="openCommentForm(@Model.Id)" style="cursor: pointer" value="@Localizer["Confirm"]" class="btn btn-sm btn-danger" />
+                            </div>
+                        </form>
+                    </div>
+                }
+
+                @if (Model.TransactionStatus == 4 && ViewBag.CountryFrom == Model.CountryId)
+                {
+                    <div id="btn-disappear">
+                        <form asp-action="ToPayOff">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div>
+                                <input asp-for="Id" type="hidden" class="form-control" />
+                                <input name="idAgent" value="@Model.AgentFromId" type="hidden" class="form-control" />
+                                <input type="submit" id="toPay" onclick="openCommentForm(@Model.Id)" style="cursor: pointer" value="@Localizer["ToPayOff"]" class="btn btn-sm btn-danger" />
+                            </div>
+                        </form>
+                    </div>
+                }
+
+                @if (Model.TransactionStatus == 5 && ViewBag.CountryFrom == Model.CountryId)
+                {
+                    <div id="btn-disappear">
+                        <form asp-action="ToIssued">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div>
+                                <input asp-for="Id" type="hidden" class="form-control" />
+                                <input name="idAgent" value="@Model.AgentFromId" type="hidden" class="form-control" />
+                                <input type="submit" id="toPay" onclick="openCommentForm(@Model.Id)" style="cursor: pointer" value="@Localizer["Issued"]" class="btn btn-sm btn-danger" />
+                            </div>
+                        </form>
+                    </div>
+                }
+                @if (Model.TransactionStatus != 6 && Model.TransactionStatus != 7 && ViewBag.CountryFrom != Model.CountryId)
+                {
+                    <div id="btn-disappear">
+                        <form asp-action="ToCanceled">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div>
+                                <input asp-for="Id" type="hidden" class="form-control" />
+                                <input name="idAgent" value="@Model.AgentFromId" type="hidden" class="form-control" />
+
+                                <input type="submit" id="Cancel" onclick="openCommentForm(@Model.Id)" style="cursor: pointer" value="@Localizer["Cancel"]" class="btn btn-sm btn-danger" />
+                            </div>
+                        </form>
+                    </div>
+                }
+            </div>
+            <div class="btn-print">
+                <div id="btn-disappear">
+                    <div>
+                        <input type="button" value="@Localizer["Print"]" style="cursor: pointer" class="btn btn-sm btn-danger" onclick="printDiv('printdiv')" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        @*<div id="btn-disappear">
+            <a asp-action="Index">@Localizer["Back to List"]</a>
+        </div>*@
+    </div>
+</div>
+
+<script>
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+</script>

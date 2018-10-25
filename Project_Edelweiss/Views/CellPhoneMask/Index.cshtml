@@ -1,0 +1,81 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
+
+@model X.PagedList.IPagedList<Edelweiss.BLL.DTO.CellPhoneMaskDTO>
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Index"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Localizer["Index"]</h2>
+
+<p>
+    <a asp-action="Create">@Localizer["Create New"]</a>
+</p>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Localizer["Id"]
+            </th>
+            <th>
+                @Localizer["Mask"]
+            </th>
+            <th>
+                @Localizer["CellPhone"]
+            </th>
+            <th>
+                @Localizer["CountryId"]
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mask)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CellPhone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountryName)
+                </td>
+                <td>
+                    <form asp-action="Details">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <div class="form-group">
+                            <input type="submit" value="@Localizer["Details"]" class="btn btn-sm btn-danger" />
+                        </div>
+                    </form>
+                    <form method="get" asp-action="Edit">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <div class="form-group">
+                            <input type="submit" value="@Localizer["Edit"]" class="btn btn-sm btn-danger" />
+                        </div>
+                    </form>
+                    <form asp-action="Delete">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <div class="form-group">
+                            <input type="submit" value="@Localizer["Delete"]" class="btn btn-sm btn-danger" />
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+    new PagedListRenderOptions {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
+    })

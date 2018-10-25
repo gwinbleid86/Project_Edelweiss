@@ -1,0 +1,105 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using AutoMapper;
+using Edelweiss.BLL.DTO;
+using Edelweiss.BLL.Interfaces;
+using Project_Edelweiss.Models;
+
+namespace Project_Edelweiss.Controllers
+{
+    //[NonController]
+   public class ClientController : Controller 
+    {
+        IClientService clientService;
+        public ClientController(IClientService clientService)
+        {
+            this.clientService = clientService;
+        }
+        public IActionResult Index()
+        {
+            IEnumerable<ClientDTO> clientDtos = clientService.GetAll();
+            var clients = Mapper.Map<IEnumerable<ClientDTO>, List<ClientViewModel>>(clientDtos);
+            return View(clients);
+            
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(ClientViewModel clientDTO)
+        {
+
+            if (ModelState.IsValid)
+            {
+                clientService.Create(Mapper.Map<ClientViewModel, ClientDTO>(clientDTO));
+                return RedirectToAction(nameof(Index));
+            }
+            
+            return View();
+        }
+
+<<<<<<< HEAD
+=======
+
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (!id.HasValue)//HasValue проверка на nullable
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var client = clientService.Get(id.Value);//т к принимаю int?, а в clientService int
+        //    if (client == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(client);
+        //    //return View();
+        //}
+
+>>>>>>> Transactions
+        public ActionResult Delete(int id)
+        {
+            return View(clientService.Get(id));
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteClient(int id)
+        {
+            clientService.Delete(id);
+            return RedirectToAction(nameof(Index));
+        }
+        
+        // GET:
+        public IActionResult Edit(int id)
+        {
+          
+            var client = Mapper.Map<ClientDTO, ClientViewModel >(clientService.Get(id));
+           
+
+            return View(client);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(ClientDTO client)
+        {
+            clientService.Update(client);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Details(int id)
+        {
+           
+
+            var client = clientService.Get(id);
+            
+            return View(client);
+        }
+    }
+}

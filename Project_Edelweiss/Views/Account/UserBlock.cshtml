@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.DAL.Entities.User
+@inject IViewLocalizer Localizer
+
+@{
+    @Localizer["UserBlock"];
+}
+
+<h2>@Localizer["UserBlock"]</h2>
+
+<div>
+    <h4>@Localizer["User"] @Model.UserName @Localizer["Blocked"]</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AgentId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AgentId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <form asp-action="UserUnBlock" asp-route-id="@Model.Id">
+        <input type="submit" value="@Localizer["Unblock"]" />
+    </form>
+    <a asp-action="Index" asp-controller="Agent">@Localizer["Back to List"]</a>
+</div>

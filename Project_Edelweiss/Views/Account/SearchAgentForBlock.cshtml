@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["SearchAgentForBlock"];
+}
+
+<h2>@Localizer["SearchAgentForBlock"]</h2>
+<br/>
+<br/>
+<form asp-controller="Account" asp-action="SearchAgentForBlock">
+    <p>
+        @Localizer["Input Name of Bank"] <input type="text" name="agentName" >
+        <input type="submit" value="@Localizer["Search"]" class="btn btn-sm btn-danger"/>
+    </p>
+</form>

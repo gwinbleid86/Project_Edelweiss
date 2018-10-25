@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.CommissionsDividingDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Delete"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+
+    <h3>@Localizer["DeleteQuestion"]</h3>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Localizer["AgentFromCommission"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AgentFromCommission)
+            </dd>
+            <dt>
+                @Localizer["AgentToCommission"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AgentToCommission)
+            </dd>
+            <dt>
+                @Localizer["SystemCommission"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.SystemCommission)
+            </dd>
+        </dl>
+
+        <form asp-action="DeleteItem">
+            <input type="submit" value="@Localizer["DeleteBtn"]" class="btn btn-sm btn-danger" /> |
+            <a asp-action="Index">@Localizer["Back to List"]</a>
+        </form>
+    </div>
+
+</div>
+

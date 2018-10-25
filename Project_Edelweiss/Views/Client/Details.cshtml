@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.ClientDTO
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["Details"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2>@Localizer["Details"]</h2>
+    <hr />
+    <div class="containerBorder">
+        @*<div class="detailElement">
+                <div class="description">@Localizer["Id"]</div>
+                <div class="objectValue">@Html.DisplayFor(model => model.Id)</div>
+            </div>*@
+        <div class="detailElement">
+            <div class="description">@Localizer["Name"]</div>
+            <div class="objectValue">@Html.DisplayFor(model => model.Name)</div>
+        </div>
+        <div class="detailElement">
+            <div class="description">@Localizer["LastName"]</div>
+            <div class="objectValue">@Html.DisplayFor(model => model.LastName)</div>
+        </div>
+        <div class="detailElement">
+            <div class="description">@Localizer["PassportData"]</div>
+            <div class="objectValue">@Html.DisplayFor(model => model.PassportData)</div>
+        </div>
+        <div class="detailElement">
+            <div class="description">@Localizer["MobilePhone"]</div>
+            <div class="objectValue">@Html.DisplayFor(model => model.MobilePhone)</div>
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+        <form method="get" asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Id" type="hidden" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Edit"]" class="btn btn-sm btn-danger" />
+            </div>
+        </form>
+    </div>
+    <div>
+        <div class="col-md-4">
+            <form method="get" asp-controller="SysTransactions" asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="Id" type="hidden" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="@Localizer["Create Transaction"]" class="btn btn-sm btn-danger" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@*<div>
+        <a asp-controller="Client" asp-action="Edit" asp-route-id="@Model.Id">@Localizer["Edit"]</a>
+        <a asp-action="Index">@Localizer["Back to List"]</a>
+    </div>
+    <br />
+    <div>
+        <a asp-controller="SysTransactions" asp-action="Create" asp-route-id="@Model.Id">@Localizer["Create Transaction"]</a>
+    </div>*@

@@ -1,0 +1,177 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using X.PagedList
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
+@model Edelweiss.BLL.DTO.SortDTO
+@*@model X.PagedList.IPagedList<Edelweiss.BLL.DTO.SysTransactionDTO>*@
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = "Sort";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h4>@Localizer["Search"]</h4>
+    <div>
+        <div class="form-check-inline">
+            <form asp-controller="SysTransactions" asp-action="Sort">
+                <div class="form-check-inline form-filter-div">
+                    <label class="form-check-inline">@Localizer["Tcn"] </label>
+                    <input name="tcn" class="form-control form-filter" />
+                </div>
+                <div class="form-check-inline form-filter-div last-div">
+                    <label class="form-check-inline ">@Localizer["FIO"] </label>
+                    <input name="fio" value="@Model.Fio" class="form-control form-filter" />
+                </div>
+                <div class="form-check-inline form-filter-div">
+                    <span><label class="DateFrom">@Localizer["DateFrom"] </label></span>
+                    <input name="timeFrom" id="dateFieldFirst" value="@Model.DateFrom" class="form-control form-filter" />
+                </div>
+                <div class="form-check-inline form-filter-div">
+                    <label class="DateTo">@Localizer["DateTo"] </label>
+                    <input name="timeTo" id="dateFieldSecond" value="@Model.DateTo" class="form-control form-filter" />
+                </div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="form-check-inline form-filter-div">
+                        <label class="form-check-inline">@Localizer["AgentTo"] </label>
+                        <input name="agentTo" value="@Model.AgentTo" class="form-control form-filter" />
+                    </div>
+                    <div class="form-check-inline form-filter-div">
+                        <label class="form-check-inline">@Localizer["AgentFrom"] </label>
+                        <input name="agentFrom" value="@Model.AgentFrom" class="form-control form-filter" />
+                    </div>
+                    <div class="form-check-inline form-filter-div">
+                        <label class="form-check-inline">@Localizer["Country"] </label>
+                        <input name="country" value="@Model.Country" class="form-control form-filter" />
+                    </div>
+                }
+                <div class="form-group" id="btn-margin">
+                    <input type="submit" class="form-check-inline, btn btn-sm btn-danger" value="@Localizer["Filter"]" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <main role="main">
+
+    </main>
+    <h2>@Localizer["List"]</h2>
+    <p>
+    </p>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    @Localizer["Sum"]
+                </th>
+                <th>
+                    @Localizer["Tcn"]
+                </th>
+                <th>
+                    @Localizer["TransactionStatus"]
+                </th>
+                <th>
+                    @Localizer["CreateDateLocal"]
+                </th>
+                <th>
+                    @Localizer["AgentFrom"]
+                </th>
+                <th>
+                    @Localizer["AgentTo"]
+                </th>
+                <th>
+                    @Localizer["Commission To"]
+                </th>
+                <th>
+                    @Localizer["CountryId"]
+                </th>
+                <th>
+                    @Localizer["ClientFrom"]
+                </th>
+                <th>
+                    @Localizer["ClientTo"]
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Transaction)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sum) @Html.DisplayFor(modelItem => item.CurrencyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tcn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDateLocal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AgentFromName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AgentToName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AgentToCommission)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientFromName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientToName)
+                </td>
+                <td>
+                    <form asp-action="Details">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input type="hidden" name="idAgent" class="form-control" value="@item.AgentFromId" />
+                        <div class="form-group">
+                            <input type="submit" value="@Localizer["Details"]" class="btn btn-sm btn-danger" />
+                        </div>
+                    </form>
+                    @if (!User.IsInRole("Admin"))
+                    {
+                        <form asp-action="Copy">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <input type="hidden" name="clientFromId" class="form-control" value="@item.ClientFromId" />
+                            <input type="hidden" name="clientToId" class="form-control" value="@item.ClientToId" />
+                            <div class="form-group">
+                                <input type="submit" value="@Localizer["Copy"]" class="btn btn-sm btn-danger" />
+                            </div>
+                        </form>
+                    }
+                    
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    @Html.PagedListPager(Model.Transaction, page => Url.Action("Sort",
+        new {page = page, agentTo = Model.AgentTo, agentFrom = Model.AgentFrom, timeFrom = Model.DateFrom, timeTo = Model.DateTo, fio = Model.Fio, country = Model.Country}),
+        new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] {"page-item"},
+            PageClasses = new string[] {"page-link"}
+        })
+</div>
+
+
+@section Scripts
+    {
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#dateFieldFirst").datepicker();
+            $("#dateFieldSecond").datepicker();
+        });
+    </script>
+}

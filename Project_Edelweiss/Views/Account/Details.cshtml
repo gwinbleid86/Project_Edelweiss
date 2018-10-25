@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.UserDTO
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["Details"];
+}
+
+<h2>@Localizer["Details"]</h2>
+
+<div>
+    <h4>Пользователь @Model.UserName</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AgentId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AgentId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+    </dl>
+</div>
+<div>
+    @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
+    <form @*method="post" *@ asp-action="UserBlock" asp-route-id="@Model.Id">
+        <input type="submit" value="@Localizer["Block"]" />
+    </form>
+    <form @*method="post" *@ asp-action="UserUnBlock" asp-route-id="@Model.Id">
+        <input type="submit" value="@Localizer["Unblock"]" />
+    </form>
+    @*@Html.ActionLink("Заблокировать", "UserBlock",  new { id = Model.Id })|*@
+    <a asp-action="Index" asp-controller="Agent">@Localizer["Back to List"]</a>
+</div>

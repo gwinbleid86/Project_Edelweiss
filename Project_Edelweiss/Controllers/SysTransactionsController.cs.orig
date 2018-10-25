@@ -1,0 +1,325 @@
+﻿using System;
+using Edelweiss.BLL.DTO;
+using Edelweiss.BLL.Enums;
+using Edelweiss.BLL.Interfaces;
+using Edelweiss.DAL.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Project_Edelweiss.Controllers
+{
+    public class SysTransactionsController : Controller
+    {
+        ISysTransactionService transactionService;
+        private UserManager<User> _userManager;
+        private RoleManager<IdentityRole> _roleManager;
+
+        public SysTransactionsController(ISysTransactionService transactionService, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            this.transactionService = transactionService;
+            _userManager = userManager;
+            _roleManager = roleManager;
+        }
+        //++++++++++++++++++++++++++++++++++++++++++++++      CRUD       ++++++++++++++++++++++++++++++++++++++++++++++++++
+        // GET: SysTransactions
+        public IActionResult Index()
+        {
+            return View(transactionService.GetAllByUserId(_userManager.GetUserId(HttpContext.User)));
+        }
+
+        // GET: SysTransactions/Details/5
+        public ActionResult Details(int id)
+        {
+            return View(transactionService.SingleIncludeAgents(id));
+        }
+
+        // GET: SysTransactions/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: SysTransactions/Create
+        [HttpPost]
+        public IActionResult Create(SysTransactionDTO transaction)
+        {
+
+            if (ModelState.IsValid)
+            {
+                transactionService.Create(transaction, _userManager.GetUserId(HttpContext.User));
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View();
+        }
+
+        // GET: SysTransactions/Edit/5
+        public ActionResult Edit(int id)
+        {
+            return View(transactionService.SingleIncludeAgents(id));
+        }
+
+        // POST: SysTransactions/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(SysTransactionDTO item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    transactionService.Update(item);
+                    return RedirectToAction(nameof(Index));
+                }
+
+                return RedirectToAction(nameof(Index));//TODO заменить каким-то статусом
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: SysTransactions/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View(transactionService.Get(id));
+        }
+
+        // POST: SysTransactions/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteItem(int id)
+        {
+            transactionService.Delete(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        //++++++++++++++++++++++++++++++++++++++++++++      Транзакции и статусы       +++++++++++++++++++++++++++++++++++++++++++++++
+        public IActionResult AllCreated()
+        {
+            return View(transactionService.Find(t => t.TransactionStatus == (int)TransactionStatus.Created));
+        }
+
+        public IActionResult AllToPay()
+        {
+            return View(transactionService.AllByStatusAndUserId(_userManager.GetUserId(HttpContext.User), "ToPay"));
+        }
+
+        public IActionResult AllApproved()
+        {
+            return View(transactionService.AllByStatusAndUserId(_userManager.GetUserId(HttpContext.User), "Approved"));
+        }
+
+        public IActionResult AllConfirmed()
+        {
+            return View(transactionService.AllByStatusAndUserId(_userManager.GetUserId(HttpContext.User), "Confirmed"));
+        }
+
+        public IActionResult AllToPayOff()
+        {
+            return View(transactionService.AllTransactionsToPayOff(_userManager.GetUserId(HttpContext.User)));
+        }
+
+        public IActionResult AllToPayOffConfirmed()
+        {
+            return View(transactionService.AllTransactionsCantCanceled(_userManager.GetUserId(HttpContext.User), "ToPayOff"));
+        }
+
+        public IActionResult AllIssued()
+        {
+            return View(transactionService.AllTransactionsCantCanceled(_userManager.GetUserId(HttpContext.User), "Issued"));
+        }
+
+        public IActionResult AllCanceled()
+        {
+            return View(transactionService.AllTransactionsCanceled(_userManager.GetUserId(HttpContext.User)));
+        }
+
+        /*
+         * В данном окне контроллер агента видит все переводы, не подтвержденные по его пункту (точке продаж) и осуществляет подтверждение
+         */
+        public IActionResult AllByThisAgent()
+        {
+            return View(transactionService.AllForControllerAsSubAgent(_userManager.GetUserId(HttpContext.User)));
+        }
+
+        /*
+         * Система предоставляет отдельный доступ, который позволяет сотруднику видеть все переводы в рамках своего агента
+         */
+        public IActionResult AllByThisSubAgentIncludParentAgent()
+        {
+            return View(transactionService.AllForControllerAsAgent(_userManager.GetUserId(HttpContext.User)));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ToPay(int id)
+        {
+            try
+            {
+                var result = transactionService.StatusToPayAndApproved(id, "ToPay");
+                if (result) 
+                {
+                    return RedirectToAction("Details", new { id = id });
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Approved(int id)
+        {
+            try
+            {
+                var result = transactionService.StatusToPayAndApproved(id, "Approved");
+                if (result)
+                {
+                    return RedirectToAction("Details", new { id = id });
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Confirmed(int id)
+        {
+            try
+            {
+                var result = transactionService.StatusConfirmed(id, _userManager.GetUserId(HttpContext.User));
+                if (result)
+                {
+                    return RedirectToAction("Details", new { id = id });
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ToPayOff(int id)
+        {
+            try
+            {
+                var result = transactionService.StatusToPayOff(id, _userManager.GetUserId(HttpContext.User));
+                if (result)
+                {
+                    return RedirectToAction("Details", new { id = id });
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ToIssued(int id)
+        {
+            try
+            {
+                var result = transactionService.StatusToIssued(id);
+                if (result)
+                {
+                    return RedirectToAction("Details", new { id = id });
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ToCanceled(int id)
+        {
+            try
+            {
+                var result = transactionService.StatusToCanceled(id);
+                if (result)
+                {
+                    return RedirectToAction("Details", new { id = id });
+                }
+
+                return View(); //
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        //++++++++++++++++++++++++++++++++++++++++++++++      Sort       ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        public IActionResult Sort(
+            string country,
+            string agentTo,
+            string agentFrom,       
+            DateTime timeFrom,
+            DateTime timeTo,
+            string tcn, SortState sortOrder = SortState.NameAsc)
+        {
+
+            ViewBag.NameSort = sortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
+            ViewBag.PriceSort = sortOrder == SortState.PriceAsc ? SortState.PriceDesc : SortState.PriceAsc;
+            ViewBag.CompSort = sortOrder == SortState.CompAsc ? SortState.CompDesc : SortState.CompAsc;
+
+            //return View(transactionService.GetAll());
+            return View(transactionService.Sort(tcn, country, agentTo, agentFrom, timeFrom, timeTo, sortOrder));
+
+        }
+
+        public IActionResult Sort2(
+            string country,
+            string name,
+            DateTime timeFrom,
+            DateTime timeTo,
+            string tcn, SortState sortOrder = SortState.NameAsc)
+        {
+
+            ViewBag.NameSort = sortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
+            ViewBag.PriceSort = sortOrder == SortState.PriceAsc ? SortState.PriceDesc : SortState.PriceAsc;
+            ViewBag.CompSort = sortOrder == SortState.CompAsc ? SortState.CompDesc : SortState.CompAsc;
+
+            //return View(transactionService.GetAll());
+            return View(transactionService.Sort2(tcn, country, name, timeFrom, timeTo, sortOrder));
+
+        }
+
+<<<<<<< Updated upstream
+        public IActionResult SortTransactionForAgentList()//сортировка для разн пользователей
+        {
+=======
+        public IActionResult SortTransactionForAgentList(/*string userId*/)//сортировка для разн пользователей
+        {
+            transactionService.SortTransactionForAgent(_userManager.GetUserId(HttpContext.User));
+>>>>>>> Stashed changes
+            
+            
+            return View(transactionService.SortTransactionForAgent(_userManager.GetUserId(HttpContext.User)));
+        }
+    }
+}

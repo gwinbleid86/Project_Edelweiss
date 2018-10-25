@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Index"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@Localizer["Index"]</h2>
+<table class="table table-striped">
+    @foreach (var role in Model)
+    {
+        <tr>
+            <td>@role.Name</td>
+            <td>
+                <form asp-action="Delete" asp-route-id="@role.Id" method="post">
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        @Localizer["Delete"]
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+<a asp-action="Create">@Localizer["Create New"]</a><br />
+<a asp-action="UserList">@Localizer["UserList"]</a>

@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.CellPhoneMaskDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Delete"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h3>@Localizer["sure"]</h3>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Localizer["Id"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt>
+                @Localizer["Mask"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Mask)
+            </dd>
+            <dt>
+                @Localizer["CellPhone"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CellPhone)
+            </dd>
+            <dt>
+                @Localizer["CountryId"]
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CountryName)
+            </dd>
+        </dl>
+
+        <form asp-action="DeleteCellPhoneMask" asp-route-id="@Model.Id">
+            <input type="submit" value="@Localizer["Delete"]" class="btn btn-sm btn-danger" />
+        </form>
+        <a asp-action="Index">@Localizer["Back to List"]</a>
+    </div>
+
+</div>
+

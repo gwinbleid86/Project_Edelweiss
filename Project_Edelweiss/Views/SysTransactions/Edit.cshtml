@@ -1,0 +1,184 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.SysTransactionDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Edit"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@Localizer["Edit"]</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Id" type="hidden" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Sum" class="control-label"><b>@Localizer["Sum"]</b></label>
+                <label asp-for="Sum" class="control-label">@Model.Sum</label>
+                <input asp-for="Sum" type="hidden" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Tcn" class="control-label"><b>@Localizer["Tcn"]</b></label>
+                <label asp-for="Tcn" class="control-label">@Model.Tcn</label>
+                <input asp-for="Tcn" type="hidden" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="TransactionStatus" class="control-label"><b>@Localizer["TransactionStatus"]</b></label>
+                <label asp-for="TransactionStatus" class="control-label">@Model.TransactionStatus</label>
+                <input asp-for="TransactionStatus" type="hidden" min="1" />
+            </div>
+            @*@if (User.IsInRole("Cashier"))
+        {
+            @await Html.PartialAsync("_EditCashier")
+        }
+        @if (User.IsInRole("Controller"))
+        {
+            @await Html.PartialAsync("_EditControllerPartial")
+        }*@
+
+            <div class="form-group">
+                <label asp-for="CreateDateLocal" class="control-label"><b>@Localizer["CreateDate"] </b></label>
+                <label asp-for="CreateDateLocal" class="control-label">@Model.CreateDateLocal</label>
+                <input asp-for="CreateDateLocal" type="hidden" class="form-control" />
+                <span asp-validation-for="CreateDateLocal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="ConfirmDateLocal" type="hidden" class="form-control" disabled="disabled" />
+            </div>
+            <div class="form-group">
+                <input asp-for="AgentFromId" type="hidden" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input asp-for="AgentToId" type="hidden" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input asp-for="UserFromId" type="hidden" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input asp-for="UserToId" type="hidden" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input asp-for="CountryId" type="hidden" class="form-control" min="1" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientFromId" class="control-label"><b>@Localizer["ClientFrom"] </b></label>
+                <input asp-for="ClientFromId" class="form-control" min="1" />
+                <span asp-validation-for="ClientFromId" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <input asp-for="ClientFrom.Id" type="hidden" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientFrom.Name" class="control-label"><b>ClientFrom</b></label>
+                <input asp-for="ClientFrom.Name" class="form-control" />
+                <span asp-validation-for="ClientFrom.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientFrom.LastName" class="control-label"><b>ClientFrom</b></label>
+                <input asp-for="ClientFrom.LastName" class="form-control" />
+                <span asp-validation-for="ClientFrom.LastName" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="ClientToId" class="control-label"><b>@Localizer["ClientTo"]</b></label>
+                <input asp-for="ClientToId" class="form-control" min="1" />
+                <span asp-validation-for="ClientToId" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <input asp-for="ClientTo.Id" type="hidden" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientTo.Name" class="control-label"><b>ClientToId</b></label>
+                <input asp-for="ClientTo.Name" class="form-control" />
+                <span asp-validation-for="ClientTo.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientTo.LastName" class="control-label"><b>ClientToId</b></label>
+                <input asp-for="ClientTo.LastName" class="form-control" />
+                <span asp-validation-for="ClientTo.LastName" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Change"]" class="btn btn-sm btn-danger" />
+            </div>
+        </form>
+    </div>
+</div>
+@if (Model.TransactionStatus == 1)
+{
+    <div class="row" id="btn-disappear">
+        <div class="col-md-4">
+            <form asp-action="ToPay">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="Id" type="hidden" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" id="toPay" onclick="openCommentForm(@Model.Id)" style="cursor: pointer" value="Отправить" class="btn btn-sm btn-danger" />
+                </div>
+            </form>
+        </div>
+    </div>
+}
+@if (Model.TransactionStatus == 2)
+{
+    <div class="row" id="btn-disappear">
+        <div class="col-md-4">
+            <form asp-action="Approved">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="Id" type="hidden" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" id="toPay" onclick="openCommentForm(@Model.Id)" style="cursor: pointer" value="Одобрить" class="btn btn-sm btn-danger" />
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@if (Model.TransactionStatus == 3)
+{
+    <div class="row" id="btn-disappear">
+        <div class="col-md-4">
+            <form asp-action="Confirmed">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="Id" type="hidden" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" id="toPay" onclick="openCommentForm(@Model.Id)" style="cursor: pointer" value="Подтвердить" class="btn btn-sm btn-danger" />
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+
+
+<div>
+    <a asp-action="Index">@Localizer["Назад"]</a>
+</div>
+
+<script>
+    function openCommentForm(itemId) {
+        $('#btn-disappear').hide();
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

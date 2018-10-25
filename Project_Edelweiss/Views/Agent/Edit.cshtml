@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Edelweiss.BLL.DTO.AgentDTO
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Edit"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+
+    <h2>@Localizer["Edit"]</h2>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="Id" class="form-control" type="hidden" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label">@Localizer["Name"]</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ParentAgentId" class="control-label">@Localizer["ParentAgentId"]</label>
+                    <select asp-for="ParentAgentId" asp-items="@ViewBag.agents">
+                        <option selected="selected" disabled="disabled">@Localizer["All"]</option>
+                    </select>
+                    <span asp-validation-for="ParentAgentId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <select id="countries" asp-for="CountryId" asp-items="@ViewBag.countries">@Localizer["CountryId"]</select>
+                    <span asp-validation-for="CountryId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImageLogo" class="control-label">@Localizer["ImageLogo"]</label>
+                    <input asp-for="ImageLogo" class="form-control" />
+                    <span asp-validation-for="ImageLogo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TextPromo" class="control-label">@Localizer["TextPromo"]</label>
+                    <input asp-for="TextPromo" class="form-control" />
+                    <span asp-validation-for="TextPromo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImagePromo" class="control-label">@Localizer["ImagePromo"]</label>
+                    <input asp-for="ImagePromo" class="form-control" />
+                    <span asp-validation-for="ImagePromo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="@Localizer["Edit"]" class="btn btn-sm btn-danger" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">@Localizer["Back to List"]</a>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
